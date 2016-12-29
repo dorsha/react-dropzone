@@ -35,6 +35,16 @@ class Dropzone extends React.Component {
     this.enterCounter = 0;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.openFileDialog && !this.props.openFileDialog) {
+      this.open();
+      const { onFileDialogOpened } = this.props;
+      if (onFileDialogOpened) {
+        onFileDialogOpened();
+      }
+    }
+  }
+
   componentWillUnmount() {
     document.body.onfocus = null;
     if (this.props.global && typeof document) {
@@ -238,6 +248,8 @@ class Dropzone extends React.Component {
       'onDropRejected',
       'onFileDialogCancel',
       'global',
+      'onFileDialogOpened',
+      'openFileDialog',
       'maxSize',
       'minSize'
     ];
@@ -278,7 +290,8 @@ Dropzone.defaultProps = {
   disablePreview: false,
   disableClick: false,
   multiple: true,
-  global: false
+  global: false,
+  openFileDialog: false
 };
 
 Dropzone.propTypes = {
@@ -307,6 +320,9 @@ Dropzone.propTypes = {
   multiple: React.PropTypes.bool, // Allow dropping multiple files
   accept: React.PropTypes.string, // Allow specific types of files. See https://github.com/okonet/attr-accept for more information
   name: React.PropTypes.string, // name attribute for the input tag
+
+  openFileDialog: React.PropTypes.bool,
+  onFileDialogOpened: React.PropTypes.func,
 
   global: React.PropTypes.bool
 };
