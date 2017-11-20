@@ -55,7 +55,9 @@ class Dropzone extends React.Component {
       document.addEventListener('dragover', onDocumentDragOver, false)
       document.addEventListener('drop', this.onDocumentDrop, false)
     }
-    this.fileInputEl.addEventListener('click', this.onInputElementClick, false)
+    if (this.fileInputEl != null) {
+      this.fileInputEl.addEventListener('click', this.onInputElementClick, false)
+    }
     // Tried implementing addEventListener, but didn't work out
     document.body.onfocus = this.onFileDialogCancel
   }
