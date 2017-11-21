@@ -148,7 +148,7 @@ class Dropzone extends React.Component {
     evt.preventDefault()
 
     // Only deactivate once the dropzone and all children have been left.
-    this.dragTargets = this.dragTargets.filter(el => el !== evt.target && this.node.contains(el))
+    this.dragTargets = this.dragTargets.filter(el => el !== evt.target && this.node && this.node.contains(el))
     if (this.dragTargets.length > 0) {
       return
     }
