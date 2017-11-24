@@ -204,6 +204,14 @@ class Dropzone extends React.Component {
       rejectedFiles.push(...acceptedFiles.splice(1))
     }
 
+    // Reset drag state
+    this.setState({
+      isDragActive: false,
+      draggedFiles: [],
+      acceptedFiles,
+      rejectedFiles
+    })
+
     if (onDrop) {
       onDrop.call(this, acceptedFiles, rejectedFiles, evt)
     }
@@ -218,14 +226,6 @@ class Dropzone extends React.Component {
 
     // Clear files value
     this.draggedFiles = null
-
-    // Reset drag state
-    this.setState({
-      isDragActive: false,
-      draggedFiles: [],
-      acceptedFiles,
-      rejectedFiles
-    })
   }
 
   onClick(evt) {
