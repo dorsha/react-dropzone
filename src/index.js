@@ -39,15 +39,16 @@ class Dropzone extends React.Component {
   }
 
   componentWillMount() {
+    this.enterCounter = 0;
     if (this.props.global && typeof document) {
       document.addEventListener('dragenter', this.onDragEnter);
-      document.addEventListener('dragover', this.onDragOver);
       document.addEventListener('dragleave', this.onDragLeave);
       document.addEventListener('drop', this.onDrop);
     }
   }
 
   componentDidMount() {
+    this.enterCounter = 0;
     const { preventDropOnDocument } = this.props
     this.dragTargets = []
 
@@ -73,6 +74,7 @@ class Dropzone extends React.Component {
   }
 
   componentWillUnmount() {
+    this.enterCounter = 0;
     const { preventDropOnDocument } = this.props
     if (preventDropOnDocument) {
       document.removeEventListener('dragover', onDocumentDragOver)
@@ -111,6 +113,7 @@ class Dropzone extends React.Component {
   }
 
   onDragEnter(evt) {
+    this.enterCounter++;
     evt.preventDefault()
 
     // Count the dropzone and any children that are entered.
@@ -145,7 +148,12 @@ class Dropzone extends React.Component {
   }
 
   onDragLeave(evt) {
+    this.enterCounter--;
     evt.preventDefault()
+
+    if (this.props.global && this.enterCounter > 0) {
+      return;
+    }
 
     // Only deactivate once the dropzone and all children have been left.
     this.dragTargets = this.dragTargets.filter(el => el !== evt.target && this.node && this.node.contains(el))
@@ -165,6 +173,7 @@ class Dropzone extends React.Component {
   }
 
   onDrop(evt) {
+    this.enterCounter = 0;
     const { onDrop, onDropAccepted, onDropRejected, multiple, disablePreview, accept } = this.props
     const fileList = getDataTransferItems(evt)
     const acceptedFiles = []
