@@ -61,6 +61,12 @@ class Dropzone extends React.Component {
     }
     // Tried implementing addEventListener, but didn't work out
     document.body.onfocus = this.onFileDialogCancel
+
+    if (this.props.global) {
+      document.removeEventListener('dragenter', this.onDragEnter);
+      document.removeEventListener('dragleave', this.onDragLeave);
+      document.removeEventListener('drop', this.onDrop);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
